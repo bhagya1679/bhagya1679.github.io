@@ -2,175 +2,185 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pardha Saradhi ❤️ Valentine</title>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet"><style>
+<title>Pardha Saradhi ❤️</title><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400&display=swap" rel="stylesheet"><style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{
-  height:100vh;
-  overflow:hidden;
   font-family:'Poppins',sans-serif;
-  background:radial-gradient(circle at top,#1a0026,#000814 70%);
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  background:radial-gradient(circle at center,#1a001f,#000);
   color:white;
-  text-align:center;
+  overflow:hidden;
+  height:100vh;
 }
 
-.container{
-  position:relative;
-  z-index:2;
-  padding:40px;
-  border-radius:25px;
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(20px);
-  box-shadow:0 0 40px rgba(255,0,150,0.4);
-  max-width:90%;
+.center{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  z-index:5;
 }
 
 h1{
-  font-family:'Great Vibes',cursive;
-  font-size:42px;
-  margin-bottom:10px;
-  color:#ff4da6;
-  text-shadow:0 0 20px #ff1a75;
+  font-family:'Playfair Display',serif;
+  font-size:2.8rem;
+  letter-spacing:2px;
+  margin-bottom:20px;
 }
 
 button{
-  padding:12px 25px;
+  padding:12px 28px;
   margin:10px;
   border:none;
   border-radius:30px;
-  font-size:18px;
+  font-size:1rem;
   cursor:pointer;
   transition:0.3s;
 }
 
-.yes{background:#ff1a75;color:white}
-.no{background:white;color:#ff1a75;position:relative}
+.yes{background:#ff2e63;color:white}
+.no{background:#444;color:white}
+
 button:hover{transform:scale(1.1)}
 
-#letterBox{
-  display:none;
-  margin-top:20px;
-  background:white;
-  padding:25px;
+.letter{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(0);
+  width:85%;
+  max-width:500px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(15px);
+  padding:30px;
   border-radius:20px;
-  max-width:400px;
-  margin-left:auto;
-  margin-right:auto;
-  color:#444;
+  text-align:center;
+  transition:0.6s ease;
+  z-index:10;
 }
 
-canvas{position:absolute;top:0;left:0}
+.letter.show{
+  transform:translate(-50%,-50%) scale(1);
+}
+
+#typedText{
+  font-family:'Playfair Display',serif;
+  font-size:1.1rem;
+  line-height:1.7;
+  min-height:150px;
+}
+
+canvas{
+  position:absolute;
+  top:0;
+  left:0;
+  pointer-events:none;
+}
 
 .petal{
   position:absolute;
-  font-size:25px;
-  animation:fall 6s linear infinite;
+  width:15px;
+  height:15px;
+  background:pink;
+  border-radius:50% 50% 50% 0;
+  transform:rotate(45deg);
+  animation:fall linear forwards;
 }
 
 @keyframes fall{
-  0%{transform:translateY(-10vh) rotate(0deg);opacity:0}
-  20%{opacity:1}
-  100%{transform:translateY(100vh) rotate(360deg);opacity:0}
+  to{
+    transform:translateY(100vh) rotate(360deg);
+    opacity:0;
+  }
 }
-
-.heart{
-  position:absolute;
-  font-size:35px;
-  animation:float 8s linear infinite;
-}
-
-@keyframes float{
-  0%{transform:translateY(100vh);opacity:0}
-  20%{opacity:1}
-  100%{transform:translateY(-10vh);opacity:0}
-}
-
 </style></head>
-<body><canvas id="fireworks"></canvas>
-
-<div class="heart" style="left:25%">❤️</div>
-<div class="heart" style="left:75%;animation-duration:10s">❤️</div><div class="container">
+<body><div class="center" id="proposal">
   <h1>Pardha Saradhi 💖</h1>
-  <p>Will You Be My Valentine?</p>
-  <button class="yes" onclick="acceptLove()">Yes 💕</button>
-  <button class="no" id="noBtn">No 😢</button>  <div id="letterBox">
-    <h2 style="color:#ff1a75;margin-bottom:10px">My Dearest Love ❤️</h2>
-    <p id="typedText"></p>
-  </div>
-</div><audio id="bgMusic" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
-</audio><script>
-const noBtn=document.getElementById('noBtn');
-noBtn.addEventListener('mouseover',()=>{
+  <p>Will you be my Valentine?</p>
+  <button class="yes" onclick="acceptLove()">Yes</button>
+  <button class="no" onclick="moveNo()">No</button>
+</div><div class="letter" id="letterBox">
+  <div id="typedText"></div>
+</div><!-- Realistic Bouquet --><div id="bouquet" style="position:absolute;bottom:-300px;left:50%;transform:translateX(-50%) scale(0.8);transition:2s ease;z-index:9;filter:drop-shadow(0 0 25px rgba(255,0,100,0.8));">
+  <img src="https://pngimg.com/uploads/bouquet/bouquet_PNG35.png" width="220" style="animation:floatBouquet 3s ease-in-out infinite;" />
+</div><style>
+@keyframes floatBouquet{
+  0%,100%{transform:translateY(0px)}
+  50%{transform:translateY(-15px)}
+}
+</style><audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b7c9d2f3.mp3?filename=romantic-background-112199.mp3" type="audio/mpeg">
+</audio><canvas id="fireworks"></canvas>
+
+<script>
+const noBtn=document.querySelector('.no');
+function moveNo(){
+  const x=Math.random()*80;
+  const y=Math.random()*80;
   noBtn.style.position='absolute';
-  noBtn.style.top=Math.random()*80+'%';
-  noBtn.style.left=Math.random()*80+'%';
-});
+  noBtn.style.left=x+'%';
+  noBtn.style.top=y+'%';
+}
 
 function acceptLove(){
-  const music=document.getElementById('bgMusic');
-  music.volume=0;
-  music.play();
-  let fade=setInterval(()=>{
-    if(music.volume<0.5) music.volume+=0.05;
-    else clearInterval(fade);
-  },200);
-
+  document.getElementById('proposal').style.display='none';
+  document.getElementById('bgMusic').play();
+  showLetter();
   startFireworks();
-  document.getElementById('letterBox').style.display='block';
-  typeLetter();
   createPetals();
+  showBouquet();
 }
 
-function typeLetter(){
-  const text="From the moment you entered my life, everything became magical. Your smile lights up my darkest nights, and your love is my greatest blessing. I promise to stand beside you, cherish you, and love you forever. Forever yours, Pardha Saradhi ❤️";
+function showBouquet(){
+  const bouquet=document.getElementById('bouquet');
+  setTimeout(()=>{
+    bouquet.style.bottom='40px';
+  },800);
+}
+
+function showLetter(){
+  const letter=document.getElementById('letterBox');
+  letter.classList.add('show');
+  const message=`My Dearest Love,\n\nFrom the moment you walked into my life, everything became brighter. Every heartbeat whispers your name. You are my peace, my happiness, and my forever. \n\nWith all my love,\nPardha Saradhi ❤️`;
+  typeWriter(message);
+}
+
+function typeWriter(text){
   let i=0;
+  const speed=40;
   function typing(){
     if(i<text.length){
       document.getElementById('typedText').innerHTML+=text.charAt(i);
       i++;
-      setTimeout(typing,40);
+      setTimeout(typing,speed);
     }
   }
   typing();
 }
 
-function createPetals(){
-  setInterval(()=>{
-    const petal=document.createElement('div');
-    petal.classList.add('petal');
-    petal.innerHTML='🌹';
-    petal.style.left=Math.random()*100+'%';
-    document.body.appendChild(petal);
-    setTimeout(()=>petal.remove(),6000);
-  },400);
-}
-
+// Fireworks
 const canvas=document.getElementById('fireworks');
 const ctx=canvas.getContext('2d');
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
+
 let particles=[];
 
 function startFireworks(){
   setInterval(()=>{
-    const x=Math.random()*canvas.width;
-    const y=Math.random()*canvas.height/2;
-    for(let i=0;i<100;i++){
+    for(let i=0;i<80;i++){
       particles.push({
-        x:x,
-        y:y,
+        x:canvas.width/2,
+        y:canvas.height/2,
         radius:2,
-        color:`hsl(${Math.random()*360},100%,50%)`,
+        color:`hsl(${Math.random()*360},100%,60%)`,
         speedX:(Math.random()-0.5)*6,
         speedY:(Math.random()-0.5)*6,
         life:100
       });
     }
   },800);
+  animate();
 }
 
 function animate(){
@@ -188,6 +198,17 @@ function animate(){
   });
   requestAnimationFrame(animate);
 }
-animate();
+
+// Rose Petals
+function createPetals(){
+  setInterval(()=>{
+    const petal=document.createElement('div');
+    petal.classList.add('petal');
+    petal.style.left=Math.random()*100+'vw';
+    petal.style.animationDuration=(3+Math.random()*5)+'s';
+    document.body.appendChild(petal);
+    setTimeout(()=>petal.remove(),8000);
+  },300);
+}
 </script></body>
 </html>
