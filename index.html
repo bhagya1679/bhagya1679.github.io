@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en">
+      <!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -6,10 +6,28 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{
   font-family:'Poppins',sans-serif;
-  background:radial-gradient(circle at center,#1a001f,#000);
+  background:radial-gradient(circle at center,#1a0033,#000);
   color:white;
   overflow:hidden;
   height:100vh;
+  animation:slowZoom 20s ease-in-out infinite alternate;
+}
+
+@keyframes slowZoom{
+  from{background-size:100%}
+  to{background-size:120%}
+}
+
+.moonGlow{
+  position:absolute;
+  width:400px;
+  height:400px;
+  background:radial-gradient(circle,rgba(255,255,255,0.3),transparent 70%);
+  border-radius:50%;
+  top:10%;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:1;
 }
 
 .center{
@@ -24,7 +42,6 @@ body{
 h1{
   font-family:'Playfair Display',serif;
   font-size:2.8rem;
-  letter-spacing:2px;
   margin-bottom:20px;
 }
 
@@ -40,146 +57,156 @@ button{
 
 .yes{background:#ff2e63;color:white}
 .no{background:#444;color:white}
-
 button:hover{transform:scale(1.1)}
 
-.letter{
+.envelope{
   position:absolute;
   top:50%;
   left:50%;
   transform:translate(-50%,-50%) scale(0);
-  width:85%;
-  max-width:500px;
-  background:rgba(255,255,255,0.08);
-  backdrop-filter:blur(15px);
-  padding:30px;
-  border-radius:20px;
-  text-align:center;
-  transition:0.6s ease;
+  width:320px;
+  height:200px;
+  background:#f8c8dc;
+  border-radius:10px;
+  transition:0.8s ease;
   z-index:10;
 }
 
-.letter.show{
-  transform:translate(-50%,-50%) scale(1);
+.envelope.show{transform:translate(-50%,-50%) scale(1)}
+
+.flap{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:#ff9ecb;
+  clip-path:polygon(0 0,100% 0,50% 60%);
+  transform-origin:top;
+  transition:0.8s ease;
 }
 
-#typedText{
+.envelope.open .flap{transform:rotateX(180deg)}
+
+.letter{
+  position:absolute;
+  width:90%;
+  left:5%;
+  top:20px;
+  background:white;
+  color:#333;
+  padding:20px;
+  border-radius:8px;
+  transform:translateY(100px);
+  transition:0.8s ease;
   font-family:'Playfair Display',serif;
-  font-size:1.1rem;
-  line-height:1.7;
-  min-height:150px;
+  font-size:0.95rem;
+  line-height:1.6;
 }
 
-canvas{
+.envelope.open .letter{transform:translateY(-60px)}
+
+.ring{
   position:absolute;
-  top:0;
-  left:0;
-  pointer-events:none;
+  font-size:40px;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%) scale(0);
+  transition:0.6s ease 0.5s;
 }
 
-.petal{
+.envelope.open .ring{
+  transform:translateX(-50%) scale(1.2);
+  animation:shine 1.5s infinite alternate;
+}
+
+@keyframes shine{
+  from{text-shadow:0 0 5px gold}
+  to{text-shadow:0 0 20px gold}
+}
+
+.heartBurst{
   position:absolute;
-  width:15px;
-  height:15px;
-  background:pink;
-  border-radius:50% 50% 50% 0;
-  transform:rotate(45deg);
-  animation:fall linear forwards;
+  font-size:20px;
+  animation:burst 2s ease-out forwards;
 }
 
-@keyframes fall{
-  to{
-    transform:translateY(100vh) rotate(360deg);
-    opacity:0;
-  }
+@keyframes burst{
+  to{transform:translateY(-150px) scale(0.5);opacity:0}
 }
+
+canvas{position:absolute;top:0;left:0;pointer-events:none}
 </style></head>
-<body><div class="center" id="proposal">
+<body><div class="moonGlow"></div><div class="center" id="proposal">
   <h1>Pardha Saradhi 💖</h1>
   <p>Will you be my Valentine?</p>
   <button class="yes" onclick="acceptLove()">Yes</button>
   <button class="no" onclick="moveNo()">No</button>
-</div><div class="letter" id="letterBox">
-  <div id="typedText"></div>
-</div><!-- Realistic Bouquet --><div id="bouquet" style="position:absolute;bottom:-300px;left:50%;transform:translateX(-50%) scale(0.8);transition:2s ease;z-index:9;filter:drop-shadow(0 0 25px rgba(255,0,100,0.8));">
-  <img src="https://pngimg.com/uploads/bouquet/bouquet_PNG35.png" width="220" style="animation:floatBouquet 3s ease-in-out infinite;" />
-</div><style>
-@keyframes floatBouquet{
-  0%,100%{transform:translateY(0px)}
-  50%{transform:translateY(-15px)}
-}
-</style><audio id="bgMusic" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8b7c9d2f3.mp3?filename=romantic-background-112199.mp3" type="audio/mpeg">
+</div><div class="envelope" id="envelope" onclick="openEnvelope()">
+  <div class="flap"></div>
+  <div class="letter">
+    My Dearest Love,<br><br>
+    You are my happiness, my peace, and my forever.
+    I promise to love you endlessly.<br><br>
+    Forever Yours,<br>
+    Pardha Saradhi ❤️
+  </div>
+  <div class="ring">💍</div>
+</div><audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2023/01/10/audio_8c6e6e6e8d.mp3?filename=romantic-piano-ambient-135222.mp3" type="audio/mpeg">
 </audio><canvas id="fireworks"></canvas>
 
 <script>
 const noBtn=document.querySelector('.no');
 function moveNo(){
-  const x=Math.random()*80;
-  const y=Math.random()*80;
   noBtn.style.position='absolute';
-  noBtn.style.left=x+'%';
-  noBtn.style.top=y+'%';
+  noBtn.style.left=Math.random()*80+'%';
+  noBtn.style.top=Math.random()*80+'%';
 }
 
 function acceptLove(){
   document.getElementById('proposal').style.display='none';
+  document.getElementById('envelope').classList.add('show');
   document.getElementById('bgMusic').play();
-  showLetter();
   startFireworks();
-  createPetals();
-  showBouquet();
 }
 
-function showBouquet(){
-  const bouquet=document.getElementById('bouquet');
-  setTimeout(()=>{
-    bouquet.style.bottom='40px';
-  },800);
+function openEnvelope(){
+  const env=document.getElementById('envelope');
+  env.classList.add('open');
+  heartExplosion();
 }
 
-function showLetter(){
-  const letter=document.getElementById('letterBox');
-  letter.classList.add('show');
-  const message=`My Dearest Love,\n\nFrom the moment you walked into my life, everything became brighter. Every heartbeat whispers your name. You are my peace, my happiness, and my forever. \n\nWith all my love,\nPardha Saradhi ❤️`;
-  typeWriter(message);
-}
-
-function typeWriter(text){
-  let i=0;
-  const speed=40;
-  function typing(){
-    if(i<text.length){
-      document.getElementById('typedText').innerHTML+=text.charAt(i);
-      i++;
-      setTimeout(typing,speed);
-    }
+function heartExplosion(){
+  for(let i=0;i<15;i++){
+    const heart=document.createElement('div');
+    heart.className='heartBurst';
+    heart.innerHTML='❤️';
+    heart.style.left=(45+Math.random()*10)+'%';
+    heart.style.top='50%';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),2000);
   }
-  typing();
 }
 
-// Fireworks
 const canvas=document.getElementById('fireworks');
 const ctx=canvas.getContext('2d');
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
-
 let particles=[];
 
 function startFireworks(){
   setInterval(()=>{
-    for(let i=0;i<80;i++){
+    for(let i=0;i<60;i++){
       particles.push({
         x:canvas.width/2,
         y:canvas.height/2,
         radius:2,
         color:`hsl(${Math.random()*360},100%,60%)`,
-        speedX:(Math.random()-0.5)*6,
-        speedY:(Math.random()-0.5)*6,
+        speedX:(Math.random()-0.5)*5,
+        speedY:(Math.random()-0.5)*5,
         life:100
       });
     }
-  },800);
+  },1000);
   animate();
 }
 
@@ -197,18 +224,6 @@ function animate(){
     if(p.life<=0) particles.splice(index,1);
   });
   requestAnimationFrame(animate);
-}
-
-// Rose Petals
-function createPetals(){
-  setInterval(()=>{
-    const petal=document.createElement('div');
-    petal.classList.add('petal');
-    petal.style.left=Math.random()*100+'vw';
-    petal.style.animationDuration=(3+Math.random()*5)+'s';
-    document.body.appendChild(petal);
-    setTimeout(()=>petal.remove(),8000);
-  },300);
 }
 </script></body>
 </html>
